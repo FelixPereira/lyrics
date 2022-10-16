@@ -8,7 +8,7 @@ import { API_DATA } from '../db-songs';
 
 const Discover = () => {
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data = API_DATA, isFetching, isError } = useGetTopChartsQuery();
+  const { data = API_DATA, isFetching, error } = useGetTopChartsQuery();
   const genreTitle = 'Pop';
 
   if (isFetching) return <Loader title="Loading songs..." />;
