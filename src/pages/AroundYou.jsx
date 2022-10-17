@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -12,7 +13,7 @@ const AroundYou = () => {
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const { data, isFetching, error } = useGetSongsByCountryQuery(countryCode);
 
-  const whereAmI = function (latitude, longitude) {
+  const whereAmI = (latitude, longitude) => {
     axios.get(`https://geocode.xyz/${latitude},${longitude}?geoit=json&auth=330610516493881468693x29960`)
       .then((response) => {
         setCountryCode(response.data.prov);
