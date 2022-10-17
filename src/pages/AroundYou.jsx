@@ -6,27 +6,38 @@ import { Error, Loader, SongCard } from '../components';
 import { useGetSongsByCountryQuery } from '../redux/services/shazamCore';
 
 const AroundYou = () => {
-  const [country, setCountry] = useState('HR');
+  const [countryName, setCountryName] = useState('');
+  const [countryCode, setCountryCode] = useState('');
   const [loading, setLoading] = useState(true);
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data, isFetching, error } = useGetSongsByCountryQuery(country);
+  const { data, isFetching, error } = useGetSongsByCountryQuery(countryCode);
 
-  /*
-  useEffect(() => {
-    axios.get('https://geo.ipify.org/api/v2/country?apiKey=at_VqQXQkV6aypxW4c7MB9dblVubJw5B')
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+  const whereAmI = function (latitude, longitude) {
+    axios.get(`https://geocode.xyz/${latitude},${longitude}?geoit=json&auth=330610516493881468693x29960`)
+      .then((response) => {
+        setCountryCode(response.data.prov);
+        setCountryName(response.data.country);
+      })
+      .catch((err) => console.log(err.message))
       .finally(() => setLoading(false));
-  }, [country]);
-  */
+  };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((posiction) => {
+      const { latitude } = posiction.coords;
+      const { longitude } = posiction.coords;
+
+      whereAmI(latitude, longitude);
+    });
+  }, [countryCode]);
 
   if (isFetching && loading) return <Loader title="Loading songs around you" />;
-  if (error && country) return <Error />;
+  if (error && countryCode) return <Error />;
 
   return (
     <div className="flex flex-col">
       <h2 className="font-bold text-3xl text-white text-left mt-4 mb-10">
-        Around you <span className="font-black">{country}</span>
+        Most playes in  <span className="font-black">{countryName}</span>
       </h2>
 
       <div className="flex flex-wrap sm:justify-start justify-centr gap-8">

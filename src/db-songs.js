@@ -1,4 +1,3 @@
-
 export const API_DATA = [
   {
     layout: '5',
