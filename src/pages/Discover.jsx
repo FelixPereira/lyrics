@@ -13,7 +13,7 @@ const Discover = () => {
   const genreTitle = genreListId || 'Pop';
 
   if (isFetching) return <Loader title="Loading songs..." />;
-  if (error) return <Error />;
+  // if (error) return <Error />;
 
   return (
     <div className="flex flex-col">
